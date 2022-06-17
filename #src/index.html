@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+	@@include('_head.html',{
+	"title":"Products Chart"
+	})
+	<body>
+		<div class="wrapper">
+			@@include('_header.html',{})
+			<main class="page">
+				<section class="chart">
+					<div class='chart__container _container'>
+						<div class="chart__main">
+							<div class="chart__top">
+								<h1 class="chart__title">Products Chart</h1>
+							</div>
+							<div class="chart__body">
+								<canvas class="chart__canvas" id="myChart"></canvas>
+								<div class="chart__slider">
+									<canvas class="chart__smallChart" id="mySmallChart" height="200"></canvas>
+									<div class="chart__regulator"></div>
+								</div>
+							</div>								
+						</div>
+					</div>
+				</section>
+			</main>
+			@@include('_footer.html',{})
+		</div>
+		<!-- @@include('_popup.html',{}) -->
+		@@include('_js.html',{})
+	</body>
+</html>
