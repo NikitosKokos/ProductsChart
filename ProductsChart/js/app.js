@@ -3,16 +3,22 @@ function email_test(input) {
 }
 document.addEventListener('DOMContentLoaded', () => {
    const regulator = document.querySelector('.chart__regulator');
+   const mainChart = document.querySelector('.chart__body');
+   const loader = document.querySelector('.loader-wrapper');
+   let sliderBtns;
    let labels = [];
    let dataOfChart = [];
    let products = [];
 
+   Chart.defaults.borderColor = '#bbb';
+   
    const data = {
       labels: [],
       datasets: [{
          backgroundColor: '#fff',
          borderColor: 'rgb(255, 99, 132)',
          borderWidth: 4,
+         color: '#333',
          fill: true,
          data: [],
        }]
@@ -33,8 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
          scales: {
             x: {
                grid: {
-                  display: false
-               }
+                  display: false,
+               },
+               ticks: {
+                  color: '#ddd',
+                  // autoSkipPadding: 5,
+                  maxRotation: 0,
+              }
+            },
+            y: {
+               ticks: {
+                  color: '#ddd',
+              }
             }
          },
          plugins: {
@@ -44,10 +60,28 @@ document.addEventListener('DOMContentLoaded', () => {
             datalabels: {
                display: false,
            },
+           tooltip: {
+               titleColor: 'rgb(255, 99, 132)',
+               displayColors: false,
+               titleMarginBottom: 4,
+               backgroundColor: '#111',
+               caretSize: 7,
+               padding: 10,
+               bodyFont: {
+                  size: 14 - (1920 / window.outerWidth - 1),
+               },
+               callbacks: {
+                  label: (context) => {
+                     let label = context.label || '';
+                     return `Price: ${label}`
+                  },
+                  title: (context) => {
+                     let title = context[0].formattedValue || '';
+                     return `Rating: ${title}`
+                  }
+               },
+           }
          },
-         layout: {
-            padding: 20
-        }
        }
      };
 
@@ -78,18 +112,23 @@ document.addEventListener('DOMContentLoaded', () => {
          scales: {
             x: {
                ticks: {
-                  display: false
+                  display: false,
                },
                grid: {
-                  display: false
+                  borderColor: '#fff',
+                  tickLength: 0,
+                  display: false,
                }
             },
             y: {
+               min: 3.9,
                ticks: {
                   display: false
                },
                grid: {
-                  display: false
+                  borderColor: '#fff',
+                  tickLength: 0,
+                  display: false,
                }
             }
          },
@@ -98,9 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
                display: false,
             }
          },
-         layout: {
-            // padding: 10
-        },
         elements: {
          point:{
              radius: 0
@@ -122,6 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
    async function getLabels(){
       const responce = await fetch('https://dummyjson.com/products?limit=100').then(data => data.json());
       products = responce.products.sort((a, b) => a.price - b.price);
+      
+      // show chart
+      mainChart.classList.add('_active');
+      loader.classList.add('_hide');
+
+      chartSetting();
       labels = products.map(product => product.price);
       dataOfChart = products.map(product => product.rating);
       addData(myChart, labels, dataOfChart);
@@ -147,10 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
          dataOfChart = products.slice(fromValue, toValue).map(product => product.rating);
          addData(myChart, labels, dataOfChart);
       });
-      const sliderBtns = document.querySelectorAll('.noUi-handle');
-      sliderBtns.forEach(btn => {
-         btn.style.height = `${regulator.offsetHeight}px`;
-      });
+
+      sliderBtns = document.querySelectorAll('.noUi-handle');
+      setButtonsHeight();
    }
 
    function addData(chart, label, data) {
@@ -158,6 +199,47 @@ document.addEventListener('DOMContentLoaded', () => {
       chart.data.datasets[0].data = data;
       chart.update();
   }
+
+  function setButtonsHeight(){
+      sliderBtns.forEach(btn => {
+         btn.style.height = `${regulator.offsetHeight}px`;
+      });
+   }
+
+
+   function chartSetting(){
+      if(window.outerWidth < 1920){
+         Chart.defaults.font.size = 14 - (1920 / window.outerWidth - 1);
+      }
+      
+      if(window.outerWidth < 480){
+         mySmallChart.options.aspectRatio = 7;
+         myChart.data.datasets[0].borderWidth = 2;
+         myChart.options.elements.point.radius = 2;
+         myChart.options.elements.point.hoverRadius = 3;
+         myChart.options.elements.point.hoverBorderWidth = 1;
+         mySmallChart.resize();
+      }else if(window.outerWidth < 768){
+         mySmallChart.options.aspectRatio = 9;
+         myChart.data.datasets[0].borderWidth = 3;
+         myChart.options.elements.point.radius = 3;
+         myChart.options.elements.point.hoverRadius = 4;
+         myChart.options.elements.point.hoverBorderWidth = 2;
+         mySmallChart.resize();
+      }else{
+         mySmallChart.options.aspectRatio = 15;
+         myChart.data.datasets[0].borderWidth = 4;
+         myChart.options.elements.point.radius = 4;
+         myChart.options.elements.point.hoverRadius = 5;
+         myChart.options.elements.point.hoverBorderWidth = 2;
+         mySmallChart.resize();
+      }
+   }
+
+  window.addEventListener('resize', () => {
+   setButtonsHeight();
+   chartSetting();
+  });
 
   getLabels();
 
