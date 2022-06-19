@@ -5,12 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
    const regulator = document.querySelector('.chart__regulator');
    const mainChart = document.querySelector('.chart__body');
    const loader = document.querySelector('.loader-wrapper');
+   const chartMain = document.querySelector('.chart');
+   const checkbox = document.querySelector('#theme');
    let sliderBtns;
    let labels = [];
    let dataOfChart = [];
    let products = [];
+   let borderColor = '#bbb';
 
-   Chart.defaults.borderColor = '#bbb';
+   Chart.defaults.borderColor = borderColor;
    
    const data = {
       labels: [],
@@ -36,14 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
               duration: 0,
             }
           },
-         scales: {
+          scales: {
             x: {
                grid: {
                   display: false,
                },
                ticks: {
                   color: '#ddd',
-                  // autoSkipPadding: 5,
                   maxRotation: 0,
               }
             },
@@ -215,23 +217,38 @@ document.addEventListener('DOMContentLoaded', () => {
       if(window.outerWidth < 480){
          mySmallChart.options.aspectRatio = 7;
          myChart.data.datasets[0].borderWidth = 2;
+
          myChart.options.elements.point.radius = 2;
          myChart.options.elements.point.hoverRadius = 3;
          myChart.options.elements.point.hoverBorderWidth = 1;
+
+         myChart.options.plugins.tooltip.titleMarginBottom = 2;
+         myChart.options.plugins.tooltip.padding = 7;
+         myChart.options.plugins.tooltip.caretSize = 5;
          mySmallChart.resize();
       }else if(window.outerWidth < 768){
          mySmallChart.options.aspectRatio = 9;
          myChart.data.datasets[0].borderWidth = 3;
+
          myChart.options.elements.point.radius = 3;
          myChart.options.elements.point.hoverRadius = 4;
          myChart.options.elements.point.hoverBorderWidth = 2;
+
+         myChart.options.plugins.tooltip.titleMarginBottom = 4;
+         myChart.options.plugins.tooltip.padding = 9;
+         myChart.options.plugins.tooltip.caretSize = 6;
          mySmallChart.resize();
       }else{
          mySmallChart.options.aspectRatio = 15;
          myChart.data.datasets[0].borderWidth = 4;
+
          myChart.options.elements.point.radius = 4;
          myChart.options.elements.point.hoverRadius = 5;
          myChart.options.elements.point.hoverBorderWidth = 2;
+
+         myChart.options.plugins.tooltip.titleMarginBottom = 4;
+         myChart.options.plugins.tooltip.padding = 10;
+         myChart.options.plugins.tooltip.caretSize = 7;
          mySmallChart.resize();
       }
    }
@@ -242,6 +259,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   getLabels();
+
+
+  function changeTheme(checked){
+   if(checked){
+      chartMain.classList.add('dark');
+      myChart.data.datasets[0].backgroundColor = '#333';
+      mySmallChart.options.scales.y.grid.borderColor = '#333';
+      mySmallChart.options.scales.x.grid.borderColor = '#333';
+      myChart.update();
+      mySmallChart.update();
+
+      localStorage.setItem('dark', true);
+   }else{
+      chartMain.classList.remove('dark');
+      myChart.data.datasets[0].backgroundColor = '#fff';
+      mySmallChart.options.scales.y.grid.borderColor = '#fff';
+      mySmallChart.options.scales.x.grid.borderColor = '#fff';
+      myChart.update();
+      mySmallChart.update();
+
+      localStorage.setItem('dark', false);
+   }
+}
+
+if(localStorage.getItem('dark') === 'true'){
+   checkbox.checked = true;
+   changeTheme(checkbox);
+}
+
+checkbox.addEventListener('change', (e) => changeTheme(e.target.checked));
 
 }); // end
 let btn = document.querySelectorAll('button[type="submit"],input[type="submit"]');

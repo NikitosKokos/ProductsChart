@@ -582,6 +582,9 @@ h6 {
 }
 
 .chart {
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   background: #E6E7E8;
   min-height: 100vh;
   padding-top: 30px;
@@ -592,6 +595,9 @@ h6 {
   padding: 30px 20px;
   border-radius: 20px;
   background: rgb(164, 164, 171);
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .chart__wrapper {
@@ -617,6 +623,59 @@ h6 {
   color: #fff;
 }
 
+.chart__checkbox {
+  position: relative;
+}
+
+.chart__checkbox label {
+  display: block;
+  width: 60px;
+  height: 20px;
+  background: #eee;
+  border-radius: 20px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.chart__checkbox label:before {
+  content: "";
+  width: 30px;
+  height: 30px;
+  background: #333;
+  border: 3px solid #eee;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translate(0%, -50%);
+      -ms-transform: translate(0%, -50%);
+          transform: translate(0%, -50%);
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.chart__input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.chart__input:checked + label {
+  background: #333;
+}
+
+.chart__input:checked + label:before {
+  background: rgb(255, 99, 132);
+  left: 100%;
+  -webkit-transform: translate(-100%, -50%);
+      -ms-transform: translate(-100%, -50%);
+          transform: translate(-100%, -50%);
+  border-color: #333;
+}
+
 .chart__body {
   opacity: 0;
   visibility: hidden;
@@ -639,6 +698,9 @@ h6 {
 
 .chart__smallChart {
   background: #fff;
+  -webkit-transition: background 0.3s ease-in-out;
+  -o-transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
 }
 
 .chart__slider {
@@ -652,6 +714,8 @@ h6 {
   left: 0;
   width: 100%;
   height: 100%;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .chart__regulator.noUi-target {
@@ -661,6 +725,9 @@ h6 {
 
 .chart__regulator .noUi-connect {
   background: rgba(175, 160, 192, 0.3);
+  -webkit-transition: background 0.3s ease-in-out;
+  -o-transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
 }
 
 .chart__regulator .noUi-draggable {
@@ -684,6 +751,9 @@ h6 {
   -webkit-box-shadow: none;
           box-shadow: none;
   background: rgb(198, 232, 255);
+  -webkit-transition: background 0.3s ease-in-out;
+  -o-transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
 }
 
 .chart__regulator .noUi-handle:before {
@@ -711,6 +781,30 @@ h6 {
   -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+
+.chart.dark {
+  background: #333;
+}
+
+.chart.dark .chart__main {
+  background: rgb(70, 70, 74);
+}
+
+.chart.dark .chart__smallChart {
+  background: #333;
+}
+
+.chart.dark .chart__regulator .noUi-connect {
+  background: rgba(61, 56, 67, 0.4);
+}
+
+.chart.dark .chart__regulator .noUi-draggable {
+  background: transparent;
+}
+
+.chart.dark .chart__regulator .noUi-handle {
+  background: rgb(54, 78, 93);
 }
 
 .loader-wrapper {
@@ -840,6 +934,16 @@ body._lock {
 }
 
 @media (max-width: 479.98px) {
+  .chart__checkbox label:before {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chart__checkbox label {
+    width: 40px;
+    height: 15px;
+  }
+
   .chart__regulator .noUi-handle {
     width: 15px;
   }
